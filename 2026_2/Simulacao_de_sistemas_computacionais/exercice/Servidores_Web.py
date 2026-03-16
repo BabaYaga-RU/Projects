@@ -336,3 +336,78 @@ plt.yticks(y, categorias)
 plt.legend()
 plt.tight_layout()
 plt.show()
+
+# ==================================== Interpretação dos Resultados — Itens a) a d) ====================================
+
+print("\n" + "="*80)
+print("INTERPRETAÇÃO DOS RESULTADOS — ITENS A) A D)")
+print("="*80)
+
+# a) Qual servidor tem menor tempo médio de resposta?
+print("\n1. Menor Tempo Médio")
+if Media_Dados_Servidor_A_ms < Media_Dados_Servidor_B_ms:
+    diferenca_media = Media_Dados_Servidor_B_ms - Media_Dados_Servidor_A_ms
+    percentual = (diferenca_media / Media_Dados_Servidor_B_ms) * 100
+    print(f"Servidor A vence com média de {round(Media_Dados_Servidor_A_ms, 1)} ms contra")
+    print(f"{round(Media_Dados_Servidor_B_ms, 1)} ms do Servidor B — diferença de {round(diferenca_media, 1)} ms")
+    print(f"(≈{round(percentual, 1)}% mais rápido), estatisticamente relevante em")
+    print("aplicações de alta frequência.")
+else:
+    diferenca_media = Media_Dados_Servidor_A_ms - Media_Dados_Servidor_B_ms
+    percentual = (diferenca_media / Media_Dados_Servidor_A_ms) * 100
+    print(f"Servidor B vence com média de {round(Media_Dados_Servidor_B_ms, 1)} ms contra")
+    print(f"{round(Media_Dados_Servidor_A_ms, 1)} ms do Servidor A — diferença de {round(diferenca_media, 1)} ms")
+    print(f"(≈{round(percentual, 1)}% mais rápido), estatisticamente relevante em")
+    print("aplicações de alta frequência.")
+
+# b) Qual servidor apresenta menor variabilidade?
+print("\n2. Menor Variabilidade")
+if CV_A < CV_B:
+    ratio_desvio = Desvio_Padrao_B / Desvio_Padrao_A
+    print(f"Servidor A apresenta CV de {round(CV_A, 2)}% (muito baixo)")
+    print(f"contra {round(CV_B, 2)}% do Servidor B. O desvio padrão do")
+    print(f"A ({round(Desvio_Padrao_A, 2)} ms) é {round(ratio_desvio, 1)}× menor, garantindo")
+    print("comportamento mais previsível.")
+else:
+    ratio_desvio = Desvio_Padrao_A / Desvio_Padrao_B
+    print(f"Servidor B apresenta CV de {round(CV_B, 2)}% (muito baixo)")
+    print(f"contra {round(CV_A, 2)}% do Servidor A. O desvio padrão do")
+    print(f"B ({round(Desvio_Padrao_B, 2)} ms) é {round(ratio_desvio, 1)}× menor, garantindo")
+    print("comportamento mais previsível.")
+
+# c) Há outliers que comprometem o desempenho?
+print("\n3. Presença de Outliers")
+if len(outliers_b) > len(outliers_a):
+    print(f"Servidor B apresenta valores extremos em torno")
+    print(f"de {min(outliers_b)}–{max(outliers_b)} ms (IIQ = {round(iqr_b, 1)} ms). O Servidor A é livre")
+    print(f"de outliers significativos, com IIQ compacto de {round(iqr_a, 1)}")
+    print("ms.")
+elif len(outliers_a) > len(outliers_b):
+    print(f"Servidor A apresenta valores extremos em torno")
+    print(f"de {min(outliers_a)}–{max(outliers_a)} ms (IIQ = {round(iqr_a, 1)} ms). O Servidor B é livre")
+    print(f"de outliers significativos, com IIQ compacto de {round(iqr_b, 1)}")
+    print("ms.")
+else:
+    print("Ambos os servidores apresentam padrões semelhantes de outliers.")
+    if len(outliers_a) > 0:
+        print(f"Outliers detectados: A = {outliers_a}, B = {outliers_b}")
+
+# d) Qual servidor é mais adequado para produção?
+print("\n4. Adequação para Produção")
+if Media_Dados_Servidor_A_ms < Media_Dados_Servidor_B_ms and CV_A < CV_B and len(outliers_a) <= len(outliers_b):
+    print("Servidor A é recomendado para produção. Além")
+    print("de mais rápido, sua baixa variabilidade assegura")
+    print("SLA (Service Level Agreement) consistente e")
+    print("experiência de usuário previsível.")
+elif Media_Dados_Servidor_B_ms < Media_Dados_Servidor_A_ms and CV_B < CV_A and len(outliers_b) <= len(outliers_a):
+    print("Servidor B é recomendado para produção. Além")
+    print("de mais rápido, sua baixa variabilidade assegura")
+    print("SLA (Service Level Agreement) consistente e")
+    print("experiência de usuário previsível.")
+else:
+    print("Recomendação mista: o Servidor A/B tem menor tempo médio,")
+    print("mas o Servidor B/A tem menor variabilidade. Avalie o")
+    print("trade-off entre velocidade e estabilidade conforme o")
+    print("critério de aceitação do seu ambiente de produção.")
+
+print("\n" + "="*80)
