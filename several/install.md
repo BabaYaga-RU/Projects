@@ -1,0 +1,1 @@
+py -m pip install pandas numpy scikit-learn matplotlib seaborn tensorflow
