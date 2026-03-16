@@ -302,19 +302,24 @@ print(f"{'Máximo':<25} {estatisticas_a[4]:<20} {estatisticas_b[4]:<20} {'':<30}
 print(f"{'IIQ (Q3-Q1)':<25} {round(estatisticas_a[5], 1):<20} {round(estatisticas_b[5], 1):<20} {'':<30}")
 
 # Interpretação do IIQ
-iqr_ratio = estatisticas_b[5] / estatisticas_a[5]
-print(f"\nO IIQ (Intervalo Interquartil) do Servidor B é ~{round(iqr_ratio, 1)}× maior,")
-print("evidenciando maior dispersão e presença de valores extremos.")
+iqr_a = estatisticas_a[5]
+iqr_b = estatisticas_b[5]
+
+if iqr_b > iqr_a:
+    iqr_ratio = iqr_b / iqr_a
+    print(f"\nO IIQ (Intervalo Interquartil) do Servidor B é ~{round(iqr_ratio, 1)}× maior,")
+    print("evidenciando maior dispersão e presença de valores extremos.")
+else:
+    iqr_ratio = iqr_a / iqr_b
+    print(f"\nO IIQ (Intervalo Interquartil) do Servidor A é ~{round(iqr_ratio, 1)}× maior,")
+    print("evidenciando maior dispersão e presença de valores extremos.")
 
 import matplotlib.pyplot as plt
 plt.rc('axes', labelsize=14)
 plt.rc('xtick', labelsize=12)
 plt.rc('ytick', labelsize=12)
 import seaborn as sns
-plotting_available = True
-print("Bibliotecas de visualização carregadas com sucesso!")
-
-plt.figure(figsize=(12, 8))
+plt.figure(figsize=(10, 6))
 
 # Usar apenas os 5 primeiros valores (excluindo o IQR)
 estatisticas_a_plot = estatisticas_a[:5]
@@ -324,17 +329,10 @@ categorias = ['Mínimo', 'Q1 (25%)', 'Mediana Q2 (50%)', 'Q3 (75%)', 'Máximo']
 y = np.arange(len(categorias))
 height = 0.35
 
-plt.barh(y - height/2, estatisticas_a_plot, height, label='Servidor A', color='blue')
-plt.barh(y + height/2, estatisticas_b_plot, height, label='Servidor B', color='orange')
+plt.barh(y - height/2, estatisticas_a_plot, height, label='Servidor A', color='#2E86AB')
+plt.barh(y + height/2, estatisticas_b_plot, height, label='Servidor B', color='#F18F01')
 
 plt.yticks(y, categorias)
 plt.legend()
-plt.grid(axis='x', alpha=0.3)
-
-# Adicionar valores nas barras
-for i, (a, b) in enumerate(zip(estatisticas_a_plot, estatisticas_b_plot)):
-    plt.text(a + 2, i - height/2, f'{a}', ha='left', va='center', fontsize=10)
-    plt.text(b + 2, i + height/2, f'{b}', ha='left', va='center', fontsize=10)
-
 plt.tight_layout()
 plt.show()
