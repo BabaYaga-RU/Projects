@@ -87,7 +87,7 @@ Simulação controlada
 Os dados foram gerados em ambiente de simulação computacional com carga de
 requisições idênticas para ambos os servidores.
 '''
-# Estatística Descritiva — Tendência Central
+# ===================================== Estatística Descritiva — Tendência Central =====================================
 print("Estatística Descritiva — Tendência Central")
 '''
 As medidas de tendência central revelam o "centro" da distribuição dos tempos de
@@ -213,7 +213,7 @@ print(f"{'Media (x)':<20} {Media_Dados_Servidor_A_ms:<20} {Media_Dados_Servidor_
 print(f"{'Mediana (Md)':<20} {Mediana_Dados_Servidor_A_ms:<20} {Mediana_Dados_Servidor_B_ms:<20} {'Valor central ordenado':<30} {msg_mediana}")
 print(f"{'Moda (Mo)':<20} {Moda_Dados_Servidor_A_ms:<20} {Moda_Dados_Servidor_B_ms:<20} {'Valor mais frequente':<30} {msg_moda}")
 print("-" * 125)
-# Estatística Descritiva — Dispersão e Variabilidade
+# ================================= Estatística Descritiva — Dispersão e Variabilidade =================================
 print("Estatística Descritiva — Dispersão e Variabilidade")
 '''
 As medidas de dispersão são cruciais para avaliar a estabilidade do servidor. Um
@@ -263,7 +263,7 @@ print(f"{'Amplitude (R)':<25} {Amplitude_A:<20} {Amplitude_B:<20} {'Max - Min':<
 print(f"{'Coef. de Variacao (CV)':<25} {round(CV_A, 2):>5}%{'':<14} {round(CV_B, 2):>5}%{'':<14} {'(s / media) * 100':<30} {int_cv}")
 print("-" * 125)
 
-# Boxplot Comparativo — Servidores A e B
+# ======================================= Boxplot Comparativo — Servidores A e B =======================================
 print("Boxplot Comparativo — Servidores A e B")
 
 # Calcular estatísticas para boxplot
@@ -273,14 +273,12 @@ def calcular_estatisticas_boxplot(dados, nome):
     mediana = np.percentile(dados, 50)
     q3 = np.percentile(dados, 75)
     maximo = max(dados)
-    
     print(f"\n{nome}:")
     print(f"  Mínimo: {minimo}")
     print(f"  Q1 (25%): {q1}")
     print(f"  Mediana Q2 (50%): {mediana}")
     print(f"  Q3 (75%): {q3}")
     print(f"  Máximo: {maximo}")
-    
     return [minimo, q1, mediana, q3, maximo]
 
 estatisticas_a = calcular_estatisticas_boxplot(Dados_Servidor_A_ms, "Servidor A")
@@ -303,50 +301,37 @@ print(f"\nAnálise de Outliers:")
 print(f"Servidor A - Outliers: {outliers_a}")
 print(f"Servidor B - Outliers: {outliers_b}")
 
-# Plotar figuras bonitas (opcional)
-try:
-    import matplotlib.pyplot as plt
-    plt.rc('axes', labelsize=14)
-    plt.rc('xtick', labelsize=12)
-    plt.rc('ytick', labelsize=12)
-    import seaborn as sns
-    plotting_available = True
-    print("Bibliotecas de visualização carregadas com sucesso!")
-    
-    # Visualizações comparativas - Gráfico de barras horizontais
-    plt.figure(figsize=(12, 8))
+import matplotlib.pyplot as plt
+plt.rc('axes', labelsize=14)
+plt.rc('xtick', labelsize=12)
+plt.rc('ytick', labelsize=12)
+import seaborn as sns
+plotting_available = True
+print("Bibliotecas de visualização carregadas com sucesso!")
 
-    # Preparar dados para o gráfico de barras usando as estatísticas calculadas
-    estatisticas_a = estatisticas_a  # Usa as estatísticas calculadas da função
-    estatisticas_b = estatisticas_b  # Usa as estatísticas calculadas da função
-    categorias = ['Mínimo', 'Q1 (25%)', 'Mediana Q2 (50%)', 'Q3 (75%)', 'Máximo']
+plt.figure(figsize=(12, 8))
 
-    y = np.arange(len(categorias))
-    height = 0.35
+estatisticas_a = estatisticas_a  
+estatisticas_b = estatisticas_b  
+categorias = ['Mínimo', 'Q1 (25%)', 'Mediana Q2 (50%)', 'Q3 (75%)', 'Máximo']
 
-    plt.barh(y - height/2, estatisticas_a, height, label='Servidor A', color='blue', alpha=0.7)
-    plt.barh(y + height/2, estatisticas_b, height, label='Servidor B', color='orange', alpha=0.7)
+y = np.arange(len(categorias))
+height = 0.35
 
-    plt.xlabel('Tempo de Resposta (ms)')
-    plt.ylabel('Estatísticas')
-    plt.title('Comparação das Estatísticas dos Servidores A e B')
-    plt.yticks(y, categorias)
-    plt.legend()
-    plt.grid(axis='x', alpha=0.3)
+plt.barh(y - height/2, estatisticas_a, height, label='Servidor A', color='blue' )
+plt.barh(y + height/2, estatisticas_b, height, label='Servidor B', color='orange')
 
-    # Adicionar valores nas barras
-    for i, (a, b) in enumerate(zip(estatisticas_a, estatisticas_b)):
-        plt.text(a + 2, i - height/2, f'{a}', ha='left', va='center', fontsize=10)
-        plt.text(b + 2, i + height/2, f'{b}', ha='left', va='center', fontsize=10)
+plt.yticks(y, categorias)
+plt.legend()
+plt.grid(axis='x', alpha=0.3)
 
-    plt.tight_layout()
-    plt.show()
-    
-except ImportError:
-    print("Avisos: Bibliotecas de visualização (matplotlib/seaborn) não encontradas. Instale com: pip install matplotlib seaborn")
-    print("Visualizações puladas - bibliotecas de plotagem não disponíveis")
+for i, (a, b) in enumerate(zip(estatisticas_a, estatisticas_b)):
+    plt.text(a + 2, i - height/2, f'{a}', ha='left', va='center', fontsize=10)
+    plt.text(b + 2, i + height/2, f'{b}', ha='left', va='center', fontsize=10)
 
-# Conclusão e Recomendação
+plt.tight_layout()
+plt.show()
+
 print("\n" + "="*60)
 print("CONCLUSÃO E RECOMENDAÇÃO")
 print("="*60)
