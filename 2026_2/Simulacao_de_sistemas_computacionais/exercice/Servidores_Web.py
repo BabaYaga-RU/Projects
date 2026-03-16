@@ -208,7 +208,55 @@ else:
         msg_moda = "Modas idênticas, empate técnico nesta métrica."
 
 print(f"{'Medida':<20} {'Servidor A (ms)':<20} {'Servidor B (ms)':<20} {'Fórmula':<30} {'Observação'}")
-print(f"{'Média (x̄ )':<20} {Media_Dados_Servidor_A_ms:<20} {Media_Dados_Servidor_B_ms:<20} {'Σxᵢ / n':<30} {msg_media}")
+print(f"{'Média (x̄)':<20} {Media_Dados_Servidor_A_ms:<20} {Media_Dados_Servidor_B_ms:<20} {'Σxᵢ / n':<30} {msg_media}")
 print(f"{'Mediana (Md)':<20} {Mediana_Dados_Servidor_A_ms:<20} {Mediana_Dados_Servidor_B_ms:<20} {'Valor central ordenado':<30} {msg_mediana}")
 print(f"{'Moda (Mo)':<20} {Moda_Dados_Servidor_A_ms:<20} {Moda_Dados_Servidor_B_ms:<20} {'Valor mais frequente':<30} {msg_moda}")
+print("-" * 125)
+# Estatística Descritiva — Dispersão e Variabilidade
+'''
+As medidas de dispersão são cruciais para avaliar a estabilidade do servidor. Um
+servidor com baixa variabilidade é mais previsível e confiável em produção.
+'''
+# Variância A
+soma_desvios_A = 0
+for dado in Dados_Servidor_A_ms:
+    soma_desvios_A += (dado - Media_Dados_Servidor_A_ms) ** 2
+Variancia_A = soma_desvios_A / (amostra - 1)
 
+# Desvio Padrão A
+Desvio_Padrao_A = Variancia_A ** 0.5
+
+# Amplitude A
+Amplitude_A = max(Dados_Servidor_A_ms) - min(Dados_Servidor_A_ms)
+
+# Coeficiente de Variação A
+CV_A = (Desvio_Padrao_A / Media_Dados_Servidor_A_ms) * 100
+
+# Variância B
+soma_desvios_B = 0
+for dado in Dados_Servidor_B_ms:
+    soma_desvios_B += (dado - Media_Dados_Servidor_B_ms) ** 2
+Variancia_B = soma_desvios_B / (amostra - 1)
+
+# Desvio Padrão B
+Desvio_Padrao_B = Variancia_B ** 0.5
+
+# Amplitude B
+Amplitude_B = max(Dados_Servidor_B_ms) - min(Dados_Servidor_B_ms)
+
+# Coeficiente de Variação B
+CV_B = (Desvio_Padrao_B / Media_Dados_Servidor_B_ms) * 100
+
+# Interpretações
+int_variancia = f"B é ~{round(Variancia_B / Variancia_A, 1)}x mais disperso"
+int_desvio = f"B varia {round(Desvio_Padrao_B / Desvio_Padrao_A, 1)}x mais"
+int_amplitude = "B tem range muito maior"
+int_cv = "A é altamente estável" if CV_A < 10 else "Análise de estabilidade necessária"
+
+# Tabela de Dispersão
+print(f"\n{'Medida':<25} {'Servidor A':<20} {'Servidor B':<20} {'Fórmula':<30} {'Interpretação'}")
+print(f"{'Variância (s²)':<25} {round(Variancia_A, 1):<20} {round(Variancia_B, 1):<20} {'Σ(xᵢ-x̄)² / (n-1)':<30} {int_variancia}")
+print(f"{'Desvio Padrão (s)':<25} {round(Desvio_Padrao_A, 2):<20} {round(Desvio_Padrao_B, 2):<20} {'√s²':<30} {int_desvio}")
+print(f"{'Amplitude (R)':<25} {Amplitude_A:<20} {Amplitude_B:<20} {'Máx - Mín':<30} {int_amplitude}")
+print(f"{'Coef. de Variação (CV)':<25} {round(CV_A, 2):>5}%{'':<14} {round(CV_B, 2):>5}%{'':<14} {'(s / x̄) × 100':<30} {int_cv}")
+print("-" * 125)
