@@ -5,9 +5,11 @@ os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 warnings.filterwarnings('ignore')
 import pandas as pd
 import numpy as np
+'''
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
+'''
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
@@ -47,26 +49,17 @@ Template de resolução e recomendação para ambiente de produção
 # Definição do Problema
 '''
 Contexto
-Em ambientes de simulação computacional, é fundamental avaliar o
-desempenho de servidores web medindo o tempo de resposta 
-(em milissegundos) às requisições HTTP. 
-Dois servidores — Servidor A e Servidor B — foram submetidos a 
-um conjunto idêntico de requisições simuladas, e os tempos de
-resposta foram registrados.
+Em ambientes de simulação computacional, é fundamental avaliar o desempenho de 
+servidores web medindo o tempo de resposta (em milissegundos) às requisições HTTP. 
+Dois servidores — Servidor A e Servidor B — foram submetidos a um conjunto 
+idêntico de requisições simuladas, e os tempos de resposta foram registrados.
 
 Questões Norteadoras
 
-a) Qual servidor tem
-menor tempo médio
-de resposta?
-b) Qual servidor apresenta
-menor variabilidade?
-c) Há outliers que
-comprometem o
-desempenho?
-d) Qual servidor é mais
-adequado para
-produção?
+a) Qual servidor tem menor tempo médio de resposta?
+b) Qual servidor apresenta menor variabilidade?
+c) Há outliers que comprometem o desempenho?
+d) Qual servidor é mais adequado para produção?
 
 O objetivo é determinar, com base em critérios estatísticos rigorosos, 
 qual servidor oferece melhor desempenho e maior estabilidade para 
@@ -77,11 +70,9 @@ implantação em produção.
 Variável de Interesse
 Tempo de Resposta (ms) — variável quantitativa contínua que mede o intervalo 
 entre o envio da requisição e o recebimento completo da resposta HTTP.
-Dados — Servidor A (ms) 120, 135, 128, 142, 119, 130, 125, 138, 122, 131
-Dados — Servidor B (ms) 115, 160, 118, 175, 112, 158, 120, 170, 113, 165
 '''
-Dados_Servidor_A_ms = {120, 135, 128, 142, 119, 130, 125, 138, 122, 131}
-Dados_Servidor_B_ms = {115, 160, 118, 175, 112, 158, 120, 170, 113, 165}
+Dados_Servidor_A_ms = [120, 135, 128, 142, 119, 130, 125, 138, 122, 131]
+Dados_Servidor_B_ms = [115, 160, 118, 175, 112, 158, 120, 170, 113, 165]
 '''
 Parâmetros de Coleta
 '''
@@ -101,30 +92,86 @@ requisições idênticas para ambos os servidores.
 As medidas de tendência central revelam o "centro" da distribuição dos tempos de
 resposta. Valores menores indicam melhor desempenho médio.
 '''
-# Média
-counter = 0
+# Média A
+indice_media = 0
 Media_Dados_Servidor_A_ms = 0
 while (True):
-    Media_Dados_Servidor_A_ms = Dados_Servidor_A_ms[counter] + Media_Dados_Servidor_A_ms
-    counter +=1
-    if counter == 9:
-        counter = 0
+    Media_Dados_Servidor_A_ms = Dados_Servidor_A_ms[indice_media] + Media_Dados_Servidor_A_ms
+    indice_media +=1
+    if indice_media == 9:
+        indice_media = 0
         Media_Dados_Servidor_A_ms = Media_Dados_Servidor_A_ms / amostra
         break
+
+# Médiana A
+Dados_Servidor_A_ms.sort()
+mediana_par = amostra %2 == 0
+Mediana_Dados_Servidor_A_ms = 0
+if (mediana_par == True):
+    indice_1 = int(( amostra / 2) - 1)
+    indice_2 = int( amostra / 2)
+    Mediana_Dados_Servidor_A_ms = ( Dados_Servidor_A_ms[indice_1] + Dados_Servidor_A_ms[indice_2] ) / 2
+else:
+    Mediana_Dados_Servidor_A_ms = Dados_Servidor_A_ms[int((amostra / 2) +1)]
+
+# Moda A
+Moda_Dados_Servidor_A_ms = 0
+dados = [120, 135, 128, 142, 119, 130, 125, 138, 122, 131]
+
+frequencia = {}
+for item in dados:
+    if item in frequencia:
+        frequencia[item] += 1
+    else:
+        frequencia[item] = 1
+
+# Encontrar o valor com a maior frequência
+maior_frequencia = max(frequencia.values())
+
+# Identificar qual(is) valor(es) atingiram essa frequência
+moda = [k for k, v in frequencia.items() if v == maior_frequencia]
+
+if maior_frequencia == 1:
+    print("O conjunto é amodal (não há moda).")
+else:
+    print(f"Moda: {moda}")
+
+
+# Média B
 Media_Dados_Servidor_B_ms = 0
 while (True):
-    Media_Dados_Servidor_B_ms = Dados_Servidor_B_ms[counter] + Media_Dados_Servidor_B_ms
-    counter +=1
-    if counter == 9:
+    Media_Dados_Servidor_B_ms = Dados_Servidor_B_ms[indice_media] + Media_Dados_Servidor_B_ms
+    indice_media +=1
+    if indice_media == 9:
         Media_Dados_Servidor_B_ms = Media_Dados_Servidor_B_ms / amostra
         break
-msg_1 = ""
-msg_2 = ""
-if Media_Dados_Servidor_A_ms < Media_Dados_Servidor_B_ms:
-    msg_1 = 'A é ' + (Media_Dados_Servidor_B_ms - Media_Dados_Servidor_A_ms) + 'ms mais rápido'
 
-print ('Dados Servidor A (ms): ' + Dados_Servidor_A_ms)
-print ('Dados Servidor B (ms): ' + Dados_Servidor_B_ms + '\n')
-print ('Média (x̄) Servidor A (ms): ' + Media_Dados_Servidor_A_ms)
-print ('Média (x̄) Servidor B (ms): ' + Media_Dados_Servidor_B_ms)
-print ('Observação: ' + msg_1)
+# Médiana B
+Dados_Servidor_B_ms.sort()
+Mediana_Dados_Servidor_B_ms = 0
+if (mediana_par == True):
+    indice_1 = int(( amostra / 2) - 1)
+    indice_2 = int( amostra / 2)
+    Mediana_Dados_Servidor_B_ms = ( Dados_Servidor_B_ms[indice_1] + Dados_Servidor_B_ms[indice_2] ) / 2
+else:
+    Mediana_Dados_Servidor_B_ms = Dados_Servidor_B_ms[int((amostra / 2) +1)]
+
+
+# Moda B
+Moda_Dados_Servidor_B_ms = 0
+
+#Mensagens
+msg_media = ""
+if Media_Dados_Servidor_A_ms < Media_Dados_Servidor_B_ms:
+    msg_media = 'A é ' + str(Media_Dados_Servidor_B_ms - Media_Dados_Servidor_A_ms) + 'ms mais rápido'
+else:
+    msg_media = 'B é ' + str(Media_Dados_Servidor_A_ms - Media_Dados_Servidor_B_ms) + 'ms mais rápido'
+
+msg_mediana = ""
+
+
+msg_moda = ""
+
+
+print("Medida \t \t Servidor A (ms) \t Servidor B (ms) \t Fórmula  \t Observação")
+
