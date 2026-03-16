@@ -273,13 +273,8 @@ def calcular_estatisticas_boxplot(dados, nome):
     mediana = np.percentile(dados, 50)
     q3 = np.percentile(dados, 75)
     maximo = max(dados)
-    print(f"\n{nome}:")
-    print(f"  Mínimo: {minimo}")
-    print(f"  Q1 (25%): {q1}")
-    print(f"  Mediana Q2 (50%): {mediana}")
-    print(f"  Q3 (75%): {q3}")
-    print(f"  Máximo: {maximo}")
-    return [minimo, q1, mediana, q3, maximo]
+    iqr = q3 - q1
+    return [minimo, q1, mediana, q3, maximo, iqr]
 
 estatisticas_a = calcular_estatisticas_boxplot(Dados_Servidor_A_ms, "Servidor A")
 estatisticas_b = calcular_estatisticas_boxplot(Dados_Servidor_B_ms, "Servidor B")
@@ -297,9 +292,19 @@ def identificar_outliers(dados):
 outliers_a, li_a, ls_a = identificar_outliers(Dados_Servidor_A_ms)
 outliers_b, li_b, ls_b = identificar_outliers(Dados_Servidor_B_ms)
 
-print(f"\nAnálise de Outliers:")
-print(f"Servidor A - Outliers: {outliers_a}")
-print(f"Servidor B - Outliers: {outliers_b}")
+print("Cinco Números de Resumo")
+print(f"\n{'Estatística':<25} {'Serv. A':<20} {'Serv. B':<20} {'Observação'}")
+print(f"{'Mínimo':<25} {estatisticas_a[0]:<20} {estatisticas_b[0]:<20} {'':<30}")
+print(f"{'Q1 (1º Quartil)':<25} {round(estatisticas_a[1], 1):<20} {round(estatisticas_b[1], 1):<20} {'':<30}")
+print(f"{'Mediana (Q2)':<25} {round(estatisticas_a[2], 1):<20} {round(estatisticas_b[2], 1):<20} {'':<30}")
+print(f"{'Q3 (3º Quartil)':<25} {round(estatisticas_a[3], 1):<20} {round(estatisticas_b[3], 1):<20} {'':<30}")
+print(f"{'Máximo':<25} {estatisticas_a[4]:<20} {estatisticas_b[4]:<20} {'':<30}")
+print(f"{'IIQ (Q3-Q1)':<25} {round(estatisticas_a[5], 1):<20} {round(estatisticas_b[5], 1):<20} {'':<30}")
+
+# Interpretação do IIQ
+iqr_ratio = estatisticas_b[5] / estatisticas_a[5]
+print(f"\nO IIQ (Intervalo Interquartil) do Servidor B é ~{round(iqr_ratio, 1)}× maior,")
+print("evidenciando maior dispersão e presença de valores extremos.")
 
 import matplotlib.pyplot as plt
 plt.rc('axes', labelsize=14)
@@ -311,67 +316,25 @@ print("Bibliotecas de visualização carregadas com sucesso!")
 
 plt.figure(figsize=(12, 8))
 
-estatisticas_a = estatisticas_a  
-estatisticas_b = estatisticas_b  
+# Usar apenas os 5 primeiros valores (excluindo o IQR)
+estatisticas_a_plot = estatisticas_a[:5]
+estatisticas_b_plot = estatisticas_b[:5]
 categorias = ['Mínimo', 'Q1 (25%)', 'Mediana Q2 (50%)', 'Q3 (75%)', 'Máximo']
 
 y = np.arange(len(categorias))
 height = 0.35
 
-plt.barh(y - height/2, estatisticas_a, height, label='Servidor A', color='blue' )
-plt.barh(y + height/2, estatisticas_b, height, label='Servidor B', color='orange')
+plt.barh(y - height/2, estatisticas_a_plot, height, label='Servidor A', color='blue')
+plt.barh(y + height/2, estatisticas_b_plot, height, label='Servidor B', color='orange')
 
 plt.yticks(y, categorias)
 plt.legend()
 plt.grid(axis='x', alpha=0.3)
 
-for i, (a, b) in enumerate(zip(estatisticas_a, estatisticas_b)):
+# Adicionar valores nas barras
+for i, (a, b) in enumerate(zip(estatisticas_a_plot, estatisticas_b_plot)):
     plt.text(a + 2, i - height/2, f'{a}', ha='left', va='center', fontsize=10)
     plt.text(b + 2, i + height/2, f'{b}', ha='left', va='center', fontsize=10)
 
 plt.tight_layout()
 plt.show()
-
-print("\n" + "="*60)
-print("CONCLUSÃO E RECOMENDAÇÃO")
-print("="*60)
-
-print(f"\n1. Desempenho Médio:")
-print(f"   - Servidor A: {Media_Dados_Servidor_A_ms:.2f} ms")
-print(f"   - Servidor B: {Media_Dados_Servidor_B_ms:.2f} ms")
-if Media_Dados_Servidor_A_ms < Media_Dados_Servidor_B_ms:
-    print(f"   - O Servidor A é {Media_Dados_Servidor_B_ms - Media_Dados_Servidor_A_ms:.2f} ms mais rápido em média")
-else:
-    print(f"   - O Servidor B é {Media_Dados_Servidor_A_ms - Media_Dados_Servidor_B_ms:.2f} ms mais rápido em média")
-
-print(f"\n2. Estabilidade (Variabilidade):")
-print(f"   - Servidor A - CV: {CV_A:.2f}%")
-print(f"   - Servidor B - CV: {CV_B:.2f}%")
-if CV_A < CV_B:
-    print(f"   - O Servidor A é mais estável (menor variabilidade)")
-else:
-    print(f"   - O Servidor B é mais estável (menor variabilidade)")
-
-print(f"\n3. Presença de Outliers:")
-print(f"   - Servidor A: {len(outliers_a)} outliers")
-print(f"   - Servidor B: {len(outliers_b)} outliers")
-
-print(f"\n4. Recomendação Final:")
-if Media_Dados_Servidor_A_ms < Media_Dados_Servidor_B_ms and CV_A < CV_B:
-    print("   - RECOMENDADO: Servidor A")
-    print("   - Motivo: Menor tempo médio de resposta e maior estabilidade")
-elif Media_Dados_Servidor_B_ms < Media_Dados_Servidor_A_ms and CV_B < CV_A:
-    print("   - RECOMENDADO: Servidor B")
-    print("   - Motivo: Menor tempo médio de resposta e maior estabilidade")
-else:
-    print("   - DECISÃO DEPENDENTE DO CRITÉRIO:")
-    if Media_Dados_Servidor_A_ms < Media_Dados_Servidor_B_ms:
-        print("   - Para priorizar velocidade: Servidor A")
-    else:
-        print("   - Para priorizar velocidade: Servidor B")
-    if CV_A < CV_B:
-        print("   - Para priorizar estabilidade: Servidor A")
-    else:
-        print("   - Para priorizar estabilidade: Servidor B")
-
-print("\n" + "="*60)
