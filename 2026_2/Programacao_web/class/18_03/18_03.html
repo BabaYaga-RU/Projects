@@ -7,20 +7,20 @@
         <h1 style="text-align: center;"> Faça a sua reserva</h1>
         <form action="resposta.php" method="get">
             <label for="nome">Nome: </label>
-            <input type="text" nome="nome" value="Seu nome aqui">
+            <input type="text" nome="nome" placeholder="Seu nome aqui">
             </br>
             <label for="endereco">Endereço: </label>
-            <input type="text" nome="rua" value="Sua Rua aqui">
+            <input type="text" nome="rua" placeholder="Sua Rua aqui">
             </br>
             <label for="bairro">Bairro: </label>
-            <input type="text" nome="bairro" value="Seu Bairro aqui">
+            <input type="text" nome="bairro" placeholder="Seu Bairro aqui">
             <label for="cidade">Cidade: </label>
-            <input type="text" name="cidade" value="Sua Cidade aqui">
+            <input type="text" name="cidade" placeholder="Sua Cidade aqui">
             </br>   
             <label type="cep">CEP</label>
             <input type="number" name="cep" value="Seu Cep" max="9999999">  
             <label for="estado">Estado</label>
-            <select name="estado" size="25">
+            <select name="estado">
                 <option value="1">Acre (AC)</option>
                 <option value="2">Alagoas (AL)</option>
                 <option value="3">Amapá (AP)</option>
@@ -32,7 +32,7 @@
                 <option value="9">Maranhão (MA)</option>
                 <option value="10">Mato Grosso (MT)</option>
                 <option value="11">Mato Grosso do Sul (MS)</option>
-                <option value="12" select>Minas Gerais (MG)</option>
+                <option value="12" selected>Minas Gerais (MG)</option>
                 <option value="13">Pará (PA)</option>
                 <option value="14">Paraíba (PB)</option>
                 <option value="15">Paraná (PR)</option>
@@ -61,7 +61,7 @@
             <label for="sugestao">Sugestão: </label></br>
             <textarea name="sugestao"></textarea>
             </br>
-            <input type="submit">Enviar
+            <input type="submit" placeholder="Digite aqui a sua sugestão">Enviar
         </form>
     </body>
 </html>
