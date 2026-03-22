@@ -28,6 +28,17 @@ b) um vetor criado com os números de 1 até 100 ordenados em ordem decrescente
 */
 public class Main {
     public static void main(String[] args) {
-       
+        /*
+        1. Escreva um programa que leia dois vetores inteiros com dez posições cada. 
+        A partir desses vetores, carregue um terceiro vetor onde o valor de cada elemento 
+        será a média dos elementos de mesmo índice nos dois vetores anteriores.
+        */
+       double[] vetor_um = {6, 19, 184, 310, 12, 13, 28, 333, 666, 17};
+       double[] vetor_dois = {21, 16, 1, 15, 27, 5, 11, 33, 22, 4};
+       double[] vetor_tres = new double[10];
+       for (int i = 0; i < vetor_um.length; i ++){
+            vetor_tres[i] = (vetor_um[i] + vetor_dois[i]) / 2;
+            System.out.println(vetor_tres[i]);
+       }
     }
 }
