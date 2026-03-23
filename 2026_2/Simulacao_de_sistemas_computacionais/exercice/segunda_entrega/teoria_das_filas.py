@@ -69,6 +69,11 @@ def gerar_tempo_exponencial(tempo_medio):
         numero_aleatorio = 0.0001
     
     # Fórmula da transformada inversa para distribuição exponencial
+    # X = -ln(U) / λ
+    # Onde:
+    # - U é um número aleatório uniforme entre 0 e 1
+    # - λ (lambda) é a taxa de eventos (1/tempo_medio)
+    # - X é o tempo gerado seguindo distribuição exponencial
     taxa_eventos = 1.0 / tempo_medio
     return -math.log(numero_aleatorio) / taxa_eventos
 
