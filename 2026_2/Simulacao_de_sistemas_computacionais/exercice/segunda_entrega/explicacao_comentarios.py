@@ -1,12 +1,3 @@
-"""
-Explicação dos Comentários do Sistema de Filas
-
-Este arquivo contém a explicação detalhada dos comentários que estavam no arquivo original Sistema_de_Filas.py.
-
-O sistema modela um caixa de atendimento onde clientes chegam em intervalos
-aleatórios e são atendidos com tempos de serviço também aleatórios.
-"""
-
 # pip install simpy
 """
 Comando para instalar a biblioteca SimPy, que é necessária para a simulação.
