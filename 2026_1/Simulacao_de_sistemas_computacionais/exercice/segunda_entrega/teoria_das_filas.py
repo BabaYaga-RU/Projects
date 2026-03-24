@@ -44,6 +44,10 @@ import random               # Para geração de números aleatórios
 import math                 # Para funções matemáticas básicas
 import matplotlib.pyplot as plt  # Para criar gráficos
 
+# Bibliotecas avançadas para simulação e análise de filas
+import numpy as numpy_np    # Computação numérica - operações matriciais e estatísticas avançadas
+import pandas as pandas_pd  # Análise de dados - manipulação e análise de grandes volumes de dados
+
 def gerar_tempo_exponencial(tempo_medio):
     """
     Gera um tempo aleatório seguindo distribuição exponencial
@@ -77,23 +81,168 @@ def gerar_tempo_exponencial(tempo_medio):
     taxa_eventos = 1.0 / tempo_medio
     return -math.log(numero_aleatorio) / taxa_eventos
 
-def calcular_media_lista(lista_numeros):
+def calcular_media_numpy(lista_numeros):
     """
-    Calcula a média de uma lista manualmente
+    Calcula a média usando NumPy - biblioteca de computação numérica
     
-    Conceito:
-    - Média = soma de todos os valores / quantidade de valores
-    - Implementamos manualmente para não depender de numpy.mean()
+    NumPy (numpy_np) é uma biblioteca fundamental para computação científica em Python.
+    Vantagens sobre cálculo manual:
+    - Operações vetorizadas (muito mais rápidas para grandes volumes de dados)
+    - Funções matemáticas avançadas
+    - Integração com outras bibliotecas científicas
+    
+    Conceitos NumPy:
+    - numpy_np.array(): Cria arrays multidimensionais eficientes
+    - numpy_np.mean(): Calcula média de forma otimizada
+    - numpy_np.std(): Calcula desvio padrão
+    - numpy_np.percentile(): Calcula percentis (mediana, quartis, etc.)
     """
     if not lista_numeros:
         return 0
     
-    soma_total = 0
-    for valor in lista_numeros:
-        soma_total += valor
+    # Converte lista para array NumPy para operações otimizadas
+    array_dados = numpy_np.array(lista_numeros)
     
-    quantidade_valores = len(lista_numeros)
-    return soma_total / quantidade_valores
+    # Calcula média usando NumPy (muito mais rápido para grandes volumes)
+    media = numpy_np.mean(array_dados)
+    
+    return media
+
+def calcular_estatisticas_avancadas(lista_numeros):
+    """
+    Calcula estatísticas avançadas usando NumPy
+    
+    Demonstração de funcionalidades avançadas do NumPy para análise estatística:
+    - Média, mediana, desvio padrão
+    - Percentis (25%, 50%, 75%)
+    - Valor mínimo e máximo
+    - Variância
+    """
+    if not lista_numeros:
+        return {}
+    
+    # Converte para array NumPy
+    array_dados = numpy_np.array(lista_numeros)
+    
+    # Calcula estatísticas avançadas
+    estatisticas = {
+        'media': numpy_np.mean(array_dados),
+        'mediana': numpy_np.median(array_dados),
+        'desvio_padrao': numpy_np.std(array_dados),
+        'variancia': numpy_np.var(array_dados),
+        'minimo': numpy_np.min(array_dados),
+        'maximo': numpy_np.max(array_dados),
+        'percentil_25': numpy_np.percentile(array_dados, 25),
+        'percentil_50': numpy_np.percentile(array_dados, 50),  # Mediana
+        'percentil_75': numpy_np.percentile(array_dados, 75),
+        'quantidade': len(array_dados)
+    }
+    
+    return estatisticas
+
+def criar_dataframe_resultados(resultados_simulacao):
+    """
+    Cria um DataFrame pandas para organizar e analisar resultados da simulação
+    
+    Pandas (pandas_pd) é uma biblioteca poderosa para análise e manipulação de dados.
+    Vantagens para simulação de filas:
+    - Estrutura tabular intuitiva (como planilhas Excel)
+    - Operações avançadas de filtragem e agrupamento
+    - Exportação para diversos formatos (CSV, Excel, JSON)
+    - Integração perfeita com NumPy e matplotlib
+    
+    Conceitos Pandas:
+    - DataFrame: Estrutura tabular bidimensional (linhas e colunas)
+    - Series: Coluna única de dados
+    - Index: Identificadores das linhas
+    - Métodos de agregação: sum(), mean(), std(), etc.
+    """
+    
+    # Cria DataFrame a partir do dicionário de resultados
+    df = pandas_pd.DataFrame([resultados_simulacao])
+    
+    # Transpõe o DataFrame para melhor visualização (colunas como métricas)
+    df_transposto = df.T
+    df_transposto.columns = ['Valor']
+    
+    # Adiciona informações de configuração da simulação
+    df_transposto.loc['Configuração'] = 'Taxa Chegada: 3, Taxa Atendimento: 5, Tempo: 1000'
+    
+    return df_transposto
+
+def analisar_resultados_com_pandas(resultados_simulacao):
+    """
+    Realiza análise avançada dos resultados usando pandas
+    
+    Demonstração de funcionalidades avançadas do pandas:
+    - Criação de DataFrames estruturados
+    - Operações de agregação e estatísticas descritivas
+    - Comparação entre valores simulados e teóricos
+    - Geração de relatórios resumidos
+    """
+    
+    # Cria DataFrame com resultados detalhados
+    dados_comparacao = {
+        'Métrica': [
+            'Tempo Médio no Sistema',
+            'Tempo Médio na Fila', 
+            'Número Médio no Sistema',
+            'Número Médio na Fila'
+        ],
+        'Simulado': [
+            resultados_simulacao['tempo_medio_sistema_simulado'],
+            resultados_simulacao['tempo_medio_fila_simulado'],
+            resultados_simulacao['numero_medio_sistema_simulado'],
+            resultados_simulacao['numero_medio_fila_simulado']
+        ],
+        'Teórico': [
+            resultados_simulacao['tempo_medio_sistema_teorico'],
+            resultados_simulacao['tempo_medio_fila_teorico'],
+            resultados_simulacao['numero_medio_sistema_teorico'],
+            resultados_simulacao['numero_medio_fila_teorico']
+        ]
+    }
+    
+    # Cria DataFrame
+    df_comparacao = pandas_pd.DataFrame(dados_comparacao)
+    
+    # Calcula diferenças e percentuais
+    df_comparacao['Diferença'] = df_comparacao['Simulado'] - df_comparacao['Teórico']
+    df_comparacao['Erro (%)'] = (df_comparacao['Diferença'] / df_comparacao['Teórico']) * 100
+    
+    return df_comparacao
+
+def exportar_resultados(resultados_simulacao, df_comparacao):
+    """
+    Exporta resultados para diferentes formatos usando pandas
+    
+    Pandas permite exportar dados para diversos formatos:
+    - CSV: Compatível com Excel e outros softwares
+    - Excel: Planilhas com múltiplas abas
+    - JSON: Formato web e APIs
+    - SQL: Bancos de dados relacionais
+    """
+    
+    try:
+        # Exporta para CSV
+        df_comparacao.to_csv('resultados_fila.csv', index=False, sep=';', decimal=',')
+        print("✓ Resultados exportados para 'resultados_fila.csv'")
+        
+        # Exporta para Excel (se disponível)
+        try:
+            df_comparacao.to_excel('resultados_fila.xlsx', index=False, sheet_name='Comparação')
+            print("✓ Resultados exportados para 'resultados_fila.xlsx'")
+        except ImportError:
+            print("⚠ Biblioteca xlwt não disponível para exportação Excel")
+        
+        # Exporta para JSON
+        resultados_json = pandas_pd.Series(resultados_simulacao).to_json()
+        with open('resultados_fila.json', 'w', encoding='utf-8') as f:
+            f.write(resultados_json)
+        print("✓ Resultados exportados para 'resultados_fila.json'")
+        
+    except Exception as e:
+        print(f"⚠ Erro ao exportar resultados: {e}")
 
 def criar_fila():
     """
@@ -228,9 +377,9 @@ def calcular_metricas_fila(taxa_chegada_clientes, taxa_atendimento_servidor,
     utilizacao_servidor = taxa_chegada_clientes / taxa_atendimento_servidor
 
     # Métricas simuladas (baseadas nos resultados da simulação)
-    # Usamos nossa função manual de cálculo de média em vez de numpy.mean()
-    tempo_medio_sistema_simulado = calcular_media_lista(lista_tempos_total_sistema) if lista_tempos_total_sistema else 0
-    tempo_medio_fila_simulado = calcular_media_lista(lista_tempos_total_fila) if lista_tempos_total_fila else 0
+    # Agora usando NumPy para cálculos mais eficientes
+    tempo_medio_sistema_simulado = calcular_media_numpy(lista_tempos_total_sistema) if lista_tempos_total_sistema else 0
+    tempo_medio_fila_simulado = calcular_media_numpy(lista_tempos_total_fila) if lista_tempos_total_fila else 0
     numero_medio_sistema_simulado = taxa_chegada_clientes * tempo_medio_sistema_simulado  # Fórmula de Little: L = lambda * W
     numero_medio_fila_simulado = taxa_chegada_clientes * tempo_medio_fila_simulado  # Fórmula de Little: Lq = lambda * Wq
 
@@ -297,6 +446,20 @@ try:
     print(f"\nNúmero Médio no Sistema (L):")
     print(f"  Simulado: {resultados_simulacao['numero_medio_sistema_simulado']:.4f}")
     print(f"  Teórico:  {resultados_simulacao['numero_medio_sistema_teorico']:.4f}")
+    
+    # Demonstração do uso do Pandas para análise de resultados
+    print("\n=== ANÁLISE COM PANDAS ===")
+    print("DataFrame com resultados detalhados:")
+    
+    # Cria DataFrame com comparação de resultados
+    df_comparacao = analisar_resultados_com_pandas(resultados_simulacao)
+    print(df_comparacao.to_string(index=False))
+    
+    # Cria DataFrame resumido
+    df_resumo = criar_dataframe_resultados(resultados_simulacao)
+    print("\nDataFrame resumido:")
+    print(df_resumo)
+    
 except UnicodeEncodeError:
     # Fallback para versão sem símbolos caso haja erro de codificação
     print(f"rho (Utilizacao): {resultados_simulacao['utilizacao_servidor']:.4f}")
@@ -309,6 +472,19 @@ except UnicodeEncodeError:
     print(f"\nNumero Medio no Sistema (L):")
     print(f"  Simulado: {resultados_simulacao['numero_medio_sistema_simulado']:.4f}")
     print(f"  Teorico:  {resultados_simulacao['numero_medio_sistema_teorico']:.4f}")
+    
+    # Demonstração do uso do Pandas para análise de resultados
+    print("\n=== ANALISE COM PANDAS ===")
+    print("DataFrame com resultados detalhados:")
+    
+    # Cria DataFrame com comparação de resultados
+    df_comparacao = analisar_resultados_com_pandas(resultados_simulacao)
+    print(df_comparacao.to_string(index=False))
+    
+    # Cria DataFrame resumido
+    df_resumo = criar_dataframe_resultados(resultados_simulacao)
+    print("\nDataFrame resumido:")
+    print(df_resumo)
 
 # Simulação simplificada sem simpy (para funcionar sem dependências externas)
 print("\n=== SIMULAÇÃO SIMPLIFICADA (sem simpy) ===")
