@@ -73,14 +73,9 @@ armazenar os elementos da lista.
 11. Crie um método para pesquisar por um elemento específico em uma lista e
 informar, caso o elemento exista, a posição na qual ele está armazenado.
 */
-    public void pesquisar(int elemento){
-
-        for(int i = 0; i < gasto; i++){
-            if (lista[i] == elemento) {
-                System.out.println("Item encontrado, posicao " + i);
-            }
-        }
-    }
+    public void pesquisar(int elemento){ for(int i = 0; i < gasto; i++) if (lista[i] == elemento) System.out.println("Item encontrado, posicao " + i);}
+    // Apenas te treinando para ter paciencia com seu filho :)
 
 //12. Crie um método que retorne o número de elementos existentes na lista.
+    public int qnt_atual(){ return gasto;}
 }
