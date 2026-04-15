@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carros - AutoPremium</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="conteudo">
+            <h1>Catalogo de Veiculos</h1>
+            <p class="subtitulo">Confira nossa selecao de veiculos premium. Todos revisados e com garantia.</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="conteudo">
+            <a href="index.html">Inicio</a>
+            <a href="carros.html" class="ativo">Carros</a>
+            <a href="carrinho.html">Carrinho</a>
+            <a href="ajuda.html">Ajuda</a>
+        </div>
+    </nav>
+
+    <main class="conteudo">
+        <section>
+            <div class="filtros">
+                <label>
+                    Marca
+                    <select>
+                        <option>Todas</option>
+                        <option>BMW</option>
+                        <option>Audi</option>
+                        <option>Mercedes</option>
+                        <option>Toyota</option>
+                        <option>Honda</option>
+                    </select>
+                </label>
+                <label>
+                    Ano Minimo
+                    <select>
+                        <option>Todos</option>
+                        <option>2024</option>
+                        <option>2023</option>
+                        <option>2022</option>
+                        <option>2021</option>
+                        <option>2020</option>
+                    </select>
+                </label>
+                <label>
+                    Preco Maximo
+                    <select>
+                        <option>Todos</option>
+                        <option>R$ 150.000</option>
+                        <option>R$ 200.000</option>
+                        <option>R$ 250.000</option>
+                        <option>R$ 300.000</option>
+                    </select>
+                </label>
+                <label>
+                    Combustivel
+                    <select>
+                        <option>Todos</option>
+                        <option>Gasolina</option>
+                        <option>Etanol</option>
+                        <option>Hibrido</option>
+                        <option>Eletrico</option>
+                    </select>
+                </label>
+            </div>
+
+            <h2>Veiculos Disponiveis</h2>
+            <div class="grade">
+                <div class="cartao">
+                    <img src="https://cdn.motor1.com/images/mgl/xqZJ9G/s3/bmw-320i-m-sport-2023.webp" alt="BMW Serie 3">
+                    <h3>BMW Serie 3 320i M Sport</h3>
+                    <p class="preco">R$ 189.900</p>
+                    <div class="detalhes">
+                        <span>2022</span>
+                        <span>15.000 km</span>
+                        <span>Automatico</span>
+                        <span>Gasolina</span>
+                    </div>
+                    <p class="descricao">Veiculo impecavel, unico dono, todas as revisoes na concessionaria. Pacote M Sport completo.</p>
+                    <button class="botao">Ver Detalhes</button>
+                    <button class="botao botao-secundario">Adicionar ao Carrinho</button>
+                </div>
+
+                <div class="cartao">
+                    <img src="https://www.jonathanmotorcars.com/imagetag/1544/2/l/Used-2019-Audi-A4-20T-quattro-Premium-Plus-1669171664.jpg" alt="Audi A4">
+                    <h3>Audi A4 Premium Plus</h3>
+                    <p class="preco">R$ 209.900</p>
+                    <div class="detalhes">
+                        <span>2023</span>
+                        <span>8.000 km</span>
+                        <span>Automatico</span>
+                        <span>Gasolina</span>
+                    </div>
+                    <p class="descricao">Estado de zero, pacote Premium Plus com teto solar, banco em couro e assistentes de conducao.</p>
+                    <button class="botao">Ver Detalhes</button>
+                    <button class="botao botao-secundario">Adicionar ao Carrinho</button>
+                </div>
+
+                <div class="cartao">
+                    <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=400&h=200&fit=crop" alt="Mercedes C180">
+                    <h3>Mercedes-Benz C180 Avantgarde</h3>
+                    <p class="preco">R$ 229.900</p>
+                    <div class="detalhes">
+                        <span>2023</span>
+                        <span>5.000 km</span>
+                        <span>Automatico</span>
+                        <span>Gasolina</span>
+                    </div>
+                    <p class="descricao">Completo, pacote Avantgarde, MBUX, camera 360, assistente de permanencia em faixa.</p>
+                    <button class="botao">Ver Detalhes</button>
+                    <button class="botao botao-secundario">Adicionar ao Carrinho</button>
+                </div>
+
+                <div class="cartao">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8xPX-_CsbVdXtEvVPIoyCiJsV6cDoKFLkfw&s" alt="Toyota Corolla">
+                    <h3>Toyota Corolla XEi Hybrid</h3>
+                    <p class="preco">R$ 169.900</p>
+                    <div class="detalhes">
+                        <span>2024</span>
+                        <span>0 km</span>
+                        <span>Automatico</span>
+                        <span>Hibrido</span>
+                    </div>
+                    <p class="descricao">Veiculo zero km, tecnologia hibrida, baixo consumo, ideal para cidade. Pronto para entrega.</p>
+                    <button class="botao">Ver Detalhes</button>
+                    <button class="botao botao-secundario">Adicionar ao Carrinho</button>
+                </div>
+
+                <div class="cartao">
+                    <img src="https://cdn.motor1.com/images/mgl/GxRQG/s1/4x3/honda-civic-touring-em-movimento.webp" alt="Honda Civic">
+                    <h3>Honda Civic Touring</h3>
+                    <p class="preco">R$ 159.900</p>
+                    <div class="detalhes">
+                        <span>2023</span>
+                        <span>12.000 km</span>
+                        <span>Automatico</span>
+                        <span>Gasolina</span>
+                    </div>
+                    <p class="descricao">Versao topo de linha, banco em couro, teto solar, Honda Sensing, som premium.</p>
+                    <button class="botao">Ver Detalhes</button>
+                    <button class="botao botao-secundario">Adicionar ao Carrinho</button>
+                </div>
+
+                <div class="cartao">
+                    <img src="https://cdn.motor1.com/images/mgl/9mBqyp/s1/bmw-x1-sdrive20i-msport-2023.jpg" alt="BMW X1">
+                    <h3>BMW X1 sDrive20i</h3>
+                    <p class="preco">R$ 249.900</p>
+                    <div class="detalhes">
+                        <span>2023</span>
+                        <span>10.000 km</span>
+                        <span>Automatico</span>
+                        <span>Gasolina</span>
+                    </div>
+                    <p class="descricao">SUV compacto premium, espaco interno generoso, tecnologia de ponta, garantia de fabrica.</p>
+                    <button class="botao">Ver Detalhes</button>
+                    <button class="botao botao-secundario">Adicionar ao Carrinho</button>
+                </div>
+
+                <div class="cartao">
+                    <img src="https://cdn.motor1.com/images/mgl/o6zyL/s1/audi-q3-black-s-line.jpg" alt="Audi Q3">
+                    <h3>Audi Q3 S line</h3>
+                    <p class="preco">R$ 239.900</p>
+                    <div class="detalhes">
+                        <span>2024</span>
+                        <span>0 km</span>
+                        <span>Automatico</span>
+                        <span>Gasolina</span>
+                    </div>
+                    <p class="descricao">SUV zero km, pacote S line, virtual cockpit plus, farois matrix LED, assistentes completos.</p>
+                    <button class="botao">Ver Detalhes</button>
+                    <button class="botao botao-secundario">Adicionar ao Carrinho</button>
+                </div>
+
+                <div class="cartao">
+                    <img src="https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=400&h=200&fit=crop" alt="Tesla Model 3">
+                    <h3>Tesla Model 3</h3>
+                    <p class="preco">R$ 349.900</p>
+                    <div class="detalhes">
+                        <span>2023</span>
+                        <span>18.000 km</span>
+                        <span>Automatico</span>
+                        <span>Eletrico</span>
+                    </div>
+                    <p class="descricao">100% eletrico, piloto automatico, atualizacao over-the-air, supercarregador incluso.</p>
+                    <button class="botao">Ver Detalhes</button>
+                    <button class="botao botao-secundario">Adicionar ao Carrinho</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="informacao">
+            <strong>Dica:</strong> Todos os veiculos listados possuem laudo cautelar aprovado e estao prontos para transferencia. Entre em contato para agendar um test drive!
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 AutoPremium - Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
